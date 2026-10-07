@@ -1,5 +1,7 @@
 *Tugas Mobile Multiplatform*
 
-Nama: Muhammad Ihsanul Fikri
-Kelas: 5A Teknik Informatika
-NIM: 2430511027
+1. Nama: Muhammad Ihsanul Fikri
+2. Kelas: 5A Teknik Informatika
+3. NIM: 2430511027
+
+
