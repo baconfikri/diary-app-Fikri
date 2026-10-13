@@ -1,61 +1,93 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, Pressable } from 'react-native';
+import { COLORS, SPACE, RADIUS, TYPO } from '../styles/tokens';
 
-const moodColors = {
-  happy: '#fef3c7',
-  focus: '#e0f2fe',
-  calm: '#eef2ff',
-  tired: '#fee2e2',
-  social: '#ecfccb',
-};
+export default function DiaryCard({
+  title,
+  date,
+  preview,
+  moodUri,
+  onPress,
+  variant = 'list',
+}) {
+  const isGrid = variant === 'grid';
 
-export default function DiaryCard({ title, date, preview, moodUri, mood }) {
-  const borderColor = moodColors[mood] || '#e5e7eb';
   return (
-    <View style={[styles.card, { borderColor }]}>
-      <Image source={{ uri: moodUri }} style={styles.mood} />
-      <View style={styles.content}>
-        <Text style={styles.title} numberOfLines={1}>
-          {title}
-        </Text>
-        <Text style={styles.date}>{date}</Text>
-        <Text style={styles.preview} numberOfLines={3} ellipsizeMode="tail">
-          {preview}
-        </Text>
+    <Pressable
+      onPress={onPress}
+      onPressIn={undefined}
+      android_ripple={{ color: '#e5e7eb' }}
+      style={({ pressed }) => [{ opacity: pressed ? 0.85 : 1 }]}
+      accessible
+      accessibilityRole="button"
+      accessibilityLabel={`Entri ${title} tanggal ${date}`}
+      hitSlop={8}
+    >
+      <View style={[styles.card, isGrid && styles.cardGrid]}>
+        <Image
+          source={{ uri: moodUri }}
+          style={[styles.mood, isGrid && styles.moodGrid]}
+        />
+        <View style={[styles.content, isGrid && styles.contentGrid]}>
+          <Text style={styles.title} numberOfLines={1}>
+            {title}
+          </Text>
+          <Text style={styles.date}>{date}</Text>
+          <Text style={styles.preview} numberOfLines={3} ellipsizeMode="tail">
+            {preview}
+          </Text>
+        </View>
       </View>
-    </View>
+    </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
-    padding: 12,
+    alignItems: 'flex-start',
+    gap: SPACE.m,
+    padding: SPACE.m,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
-    borderRadius: 12,
-    marginBottom: 12,
-    alignItems: 'center',
+    borderColor: COLORS.border,
+    borderRadius: RADIUS.card,
+    backgroundColor: COLORS.surface,
+  },
+  cardGrid: {
+    flexDirection: 'column',
+    gap: SPACE.s,
+    minHeight: 200,
   },
   mood: {
     width: 64,
     height: 64,
-    borderRadius: 32,
-    marginRight: 12,
+    borderRadius: RADIUS.avatar,
+    backgroundColor: '#eef2ff',
+  },
+  moodGrid: {
+    width: '100%',
+    height: 110,
+    borderRadius: RADIUS.card,
   },
   content: {
     flex: 1,
+    justifyContent: 'center',
+  },
+  contentGrid: {
+    width: '100%',
   },
   title: {
-    fontSize: 16,
+    fontSize: TYPO.title,
     fontWeight: '700',
+    color: COLORS.text,
   },
   date: {
-    fontSize: 12,
-    color: '#6b7280',
+    fontSize: TYPO.caption,
+    color: COLORS.muted,
     marginBottom: 6,
   },
   preview: {
-    fontSize: 14,
+    fontSize: TYPO.body,
+    color: COLORS.text,
   },
 });
